@@ -48,15 +48,19 @@ public class FileEntity {
         ComThread.InitSTA(true);
         ActiveXComponent app = null;
 
-        if(fileType.equals("word")){
-            app = new ActiveXComponent(TransPDF.APP_WORD);
-            pdf.wordToPDF(app);
-        }else if(fileType.equals("excel")){
-            app = new ActiveXComponent(TransPDF.APP_EXCEL);
-            pdf.excelToPDF(app);
-        }else if(fileType.equals("ppt")){
-            app = new ActiveXComponent(TransPDF.APP_PPT);
-            pdf.pptToPDF(app);
+        switch (fileType) {
+            case "word":
+                app = new ActiveXComponent(TransPDF.APP_WORD);
+                pdf.wordToPDF(app);
+                break;
+            case "excel":
+                app = new ActiveXComponent(TransPDF.APP_EXCEL);
+                pdf.excelToPDF(app);
+                break;
+            case "ppt":
+                app = new ActiveXComponent(TransPDF.APP_PPT);
+                pdf.pptToPDF(app);
+                break;
         }
 
         app.invoke("Quit");
@@ -65,7 +69,6 @@ public class FileEntity {
         // 如果没有这行代码，winword.exe进程将不会关闭
         ComThread.Release();
         this.fileContent = pdf.toBase64(this);
-        return;
     }
     //删除临时文件
     public void deleteTempFile(){
@@ -75,15 +78,12 @@ public class FileEntity {
 
     public FileEntity() {
     }
-
     public String getFileName() {
         return fileName;
     }
-
     public String getFileContent() {
         return fileContent;
     }
-
     public void setFileContent(String fileContent) {
         this.fileContent = fileContent;
     }
